@@ -1,0 +1,52 @@
+---
+Metadata:
+  AWSToolsMetrics:
+    IaC_Generator: "arn:aws:cloudformation:eu-central-1:632185210869:generatedTemplate/61d6272d-b2ff-4ff9-90ba-e34c2d8e03f1"
+Resources:
+  IAMManagedPolicyPolicyResourcesViewOnlyAccessPolicy:
+    UpdateReplacePolicy: "Retain"
+    Type: "AWS::IAM::ManagedPolicy"
+    DeletionPolicy: "Retain"
+    Properties:
+      ManagedPolicyName: "ResourcesViewOnlyAccessPolicy"
+      Path: "/"
+      Description: ""
+      Groups: []
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Resource: "*"
+          Action:
+          - "ec2:Describe*"
+          - "s3:Get*"
+          - "s3:List*"
+          - "iam:Get*"
+          - "iam:List*"
+          - "cloudwatch:Get*"
+          - "cloudwatch:List*"
+          - "cloudformation:Describe*"
+          - "cloudformation:Get*"
+          - "cloudformation:List*"
+          Effect: "Allow"
+          Sid: "ResourcesViewOnlyAccessPolicy"
+      Roles:
+      - "ResourcesViewOnlyAccessRole"
+      Users: []
+  IAMRoleResourcesViewOnlyAccessRole:
+    UpdateReplacePolicy: "Retain"
+    Type: "AWS::IAM::Role"
+    DeletionPolicy: "Retain"
+    Properties:
+      Path: "/"
+      ManagedPolicyArns:
+      - Ref: "IAMManagedPolicyPolicyResourcesViewOnlyAccessPolicy"
+      MaxSessionDuration: 3600
+      RoleName: "ResourcesViewOnlyAccessRole"
+      Description: ""
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+        - Action: "sts:AssumeRole"
+          Effect: "Allow"
+          Principal:
+            AWS: "arn:aws:iam::632185210869:root"
